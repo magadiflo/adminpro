@@ -3,23 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
+import { AuthModule } from './auth/auth.module';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { NotPageFoundComponent } from './pages/not-page-found/not-page-found.component';
+import { NotPageFoundComponent } from './not-page-found/not-page-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
     NotPageFoundComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PagesModule,
+    AuthModule,
   ],
   bootstrap: [AppComponent]
 })
