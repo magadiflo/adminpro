@@ -57,8 +57,7 @@ Progress bar
 }
 
 .progress-bar {
-    width: 50%; 
-    height:10px;
+    height:8px;
 }
 
 @-webkit-keyframes myanimation {
