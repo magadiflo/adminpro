@@ -10,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class AccountSettingsComponent implements OnInit {
+  
+  linkTheme: HTMLElement = document.getElementById('theme')!;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeTheme(theme: string): void {
+    const url: string = `./assets/css/colors/${theme}.css`;
+    this.linkTheme?.setAttribute('href', url);
+
+    localStorage.setItem('theme', url);
   }
 
 }
