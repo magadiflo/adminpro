@@ -12,6 +12,7 @@ import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PromesasComponent } from './promesas/promesas.component';
     PagesComponent,
     AccountSettingsComponent,
     PromesasComponent,
+    RxjsComponent,
   ],
   exports: [
     DashboardComponent,
@@ -29,6 +31,7 @@ import { PromesasComponent } from './promesas/promesas.component';
     PagesComponent,
     AccountSettingsComponent,
     PromesasComponent,
+    RxjsComponent,
   ],
   imports: [
     CommonModule,
