@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -22,12 +22,15 @@ export class RxjsComponent {
         }
 
         if(i === 2) {
+          i = 0;
           observer.error('i llegó al valo de 2');
         }
       }, 1000);
     });
 
-    obs$.subscribe({
+    obs$.pipe( 
+      retry(2) //Captura el error cuando i = 2 y lo vuelve a intentar, pero ya i se incrementa a 3 por que está de manera global. (2) es el número de intentos a realizar
+    ).subscribe({
       next: (valor) => console.log('Subs:', valor),
       error: (error) => console.warn('Error:', error),
       complete: () => console.info('Se completó...')
