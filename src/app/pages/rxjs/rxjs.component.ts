@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Observable, retry, interval, take, map } from 'rxjs';
+import { Observable, retry, interval, take, map, filter } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -24,11 +24,12 @@ export class RxjsComponent {
       .subscribe(console.log);
   }
 
-  retornaIntervalo(): Observable<string> {
-    return interval(1000)
+  retornaIntervalo(): Observable<number> {
+    return interval(100)
       .pipe(
-        take(4), //cuántas emisiones del observable necesita. Es decir cuando llegue a 4 emisiones, finalizará
-        map(valor => `Cadena retornada ${valor + 1}`), //El map, transforma la información que recibe el observable y mutarla según yo lo necesite
+        take(10), //cuántas emisiones del observable necesita. Es decir cuando llegue a 10 emisiones, finalizará
+        map(valor1 => valor1 + 1), //El map, transforma la información que recibe el observable y mutarla según yo lo necesite
+        filter(valor2 => valor2 % 2 === 0),
       );
   }
 
