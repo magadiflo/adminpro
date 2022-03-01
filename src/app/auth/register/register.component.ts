@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-register',
@@ -12,25 +14,35 @@ export class RegisterComponent {
 
   public formSubmitted = false;
 
-  public miFormulario = this.fb.group({
+  public miFormulario: FormGroup = this.fb.group({
     nombre: ['Martín', [Validators.required, Validators.minLength(3)]],
     email: ['magadiflo@gmail.com', [Validators.required, Validators.email]],
     password: ['12345', [Validators.required]],
     password2: ['12345', [Validators.required]],
-    terminos: [true, [Validators.required]],
+    terminos: [true, [Validators.requiredTrue]],
   }, {
-    validators: this.passwordsIguales('password', 'password2')
+    validators: [this.passwordsIguales('password', 'password2')],
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService) { }
 
   crearUsuario(): void {
     this.formSubmitted = true;
-    if (this.miFormulario.valid && this.miFormulario.controls['terminos'].value) {
-      console.log('Posteando formulario...');
-    } else {
-      console.log('Formulario no es correcto...');
+    if (this.miFormulario.invalid) {
+      return;
     }
+    //Realizar el posteo
+    this.usuarioService.crearUsuario(this.miFormulario.value)
+      .subscribe({
+        next: resp => {
+          console.log(resp);
+        },
+        error: err => {
+          console.log(err.error.msg);
+        }
+      });
   }
 
   campoNoValido(campo: string): boolean {
@@ -48,14 +60,15 @@ export class RegisterComponent {
   }
 
   passwordsIguales(pass1Name: string, pass2Name: string) {
-    return (formGroup: FormGroup) => {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
       const pass1Control = formGroup.get(pass1Name);
       const pass2Control = formGroup.get(pass2Name);
-      if (pass1Control?.value === pass2Control?.value) {
-        pass2Control?.setErrors(null);
-      } else {
-        pass2Control?.setErrors({ noEsIgual: true });
+      if (pass1Control?.value !== pass2Control?.value) {
+        formGroup.get(pass2Name)?.setErrors({ noEsIgual: true });
+        return { noEsIgual: true };
       }
+      formGroup.get(pass2Name)?.setErrors(null);
+      return null;
     }
   }
 
