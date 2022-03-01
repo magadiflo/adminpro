@@ -20,6 +20,7 @@ export class UsuarioService {
   }
 
   login(formData: LoginForm) {
+    (formData.remember) ? localStorage.setItem('email', formData.email) : localStorage.removeItem('email');
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, formData)
       .pipe(
         tap(resp => {

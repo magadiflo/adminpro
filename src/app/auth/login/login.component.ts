@@ -15,11 +15,9 @@ import { UsuarioService } from '../../services/usuario.service';
 })
 export class LoginComponent {
 
-  public formSubmitted = false;
-
   public miFormulario: FormGroup = this.fb.group({
-    email: ['magadiflo@gmail.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
     remember: [false],
   });
 
@@ -29,6 +27,10 @@ export class LoginComponent {
     private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
+    this.miFormulario.controls['email'].setValue(localStorage.getItem('email') || '');
+    if (this.miFormulario.controls['email'].value.length > 1) {
+      this.miFormulario.controls['remember'].setValue(true);
+    }
   }
 
   login(): void {
