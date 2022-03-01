@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
+import Swal from 'sweetalert2'
+
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -40,7 +42,8 @@ export class RegisterComponent {
           console.log(resp);
         },
         error: err => {
-          console.log(err.error.msg);
+          //Si sucede un error
+          Swal.fire('¡Ups! Algo salió mal', err.error.msg, 'error');
         }
       });
   }
