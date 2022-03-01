@@ -33,15 +33,13 @@ export class LoginComponent {
 
   login(): void {
     this.usuarioService.login(this.miFormulario.value)
-      .subscribe({
-        next: (resp) => {
-          console.log(resp);
-        }, 
-        error: (err) => {
-          Swal.fire('¡Lo sentimos!', err.error.msg, 'error');
-        } 
+      .subscribe(ok => {
+        if (ok === true) {
+          this.router.navigateByUrl('/');
+        } else {
+          Swal.fire('¡Lo sentimos!', ok, 'error');
+        }
       });
-    //this.router.navigateByUrl('/');  
   }
 
 }

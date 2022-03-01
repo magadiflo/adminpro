@@ -3,3 +3,8 @@ export interface LoginForm {
     email: string,
     remember: boolean,
 }
+
+export interface LoginResponse {
+    ok: boolean,
+    token: string,
+}
