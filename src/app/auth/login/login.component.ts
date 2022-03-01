@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import Swal from 'sweetalert2';
+
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -8,15 +13,35 @@ import { Router } from '@angular/router';
     './login.component.css',
   ],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  constructor(private router: Router) { }
+  public formSubmitted = false;
+
+  public miFormulario: FormGroup = this.fb.group({
+    email: ['magadiflo@gmail.com', [Validators.required, Validators.email]],
+    password: ['123456', [Validators.required]],
+    remember: [false],
+  });
+
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
   }
 
   login(): void {
-    this.router.navigateByUrl('/');  
+    this.usuarioService.login(this.miFormulario.value)
+      .subscribe({
+        next: (resp) => {
+          console.log(resp);
+        }, 
+        error: (err) => {
+          Swal.fire('¡Lo sentimos!', err.error.msg, 'error');
+        } 
+      });
+    //this.router.navigateByUrl('/');  
   }
 
 }
