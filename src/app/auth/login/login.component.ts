@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,7 +28,8 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.miFormulario.controls['email'].setValue(localStorage.getItem('email') || '');
@@ -79,7 +80,9 @@ export class LoginComponent {
         this.usuarioService.loginGoogle(id_token)
           .subscribe(ok => {
             if (ok === true) {
-              this.router.navigateByUrl('/');
+              this.ngZone.run(() => { //Cuando son librerías externas, en este caso es el de google y no Angular
+                this.router.navigateByUrl('/');
+              });
             } else {
               Swal.fire('¡Lo sentimos!', ok, 'error');
             } 

@@ -1,25 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import { map, catchError, of, tap, Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { RegisterForm, AuthResponse } from '../interfaces/register-form.interface';
 import { LoginForm, LoginResponse } from '../interfaces/login-form.interface';
-import { map, catchError, of, tap, Observable } from 'rxjs';
+
+declare const gapi: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
+  public auth2: any;
   private baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ngZone: NgZone) {
+    this.googleInit();
+  }
 
   crearUsuario(formData: RegisterForm) {
     return this.http.post<AuthResponse>(`${this.baseUrl}/usuarios`, formData)
       .pipe(
-        tap(({ok, token}) => {
-          if(ok){
+        tap(({ ok, token }) => {
+          if (ok) {
             localStorage.setItem('token', token!);
           }
         }),
@@ -30,20 +40,20 @@ export class UsuarioService {
 
   validarToken(): Observable<boolean> {
     const token = localStorage.getItem('token') || '';
-    return this.http.get<LoginResponse>(`${this.baseUrl}/login/renew`, { 
+    return this.http.get<LoginResponse>(`${this.baseUrl}/login/renew`, {
       headers: {
         'x-token': token
       }
     })
-    .pipe(
-      tap(resp => {
-        if (resp.ok) {
-          localStorage.setItem('token', resp.token);
-        }
-      }),
-      map(resp => resp.ok), //true
-      catchError(err => of(err.ok))//false
-    );
+      .pipe(
+        tap(resp => {
+          if (resp.ok) {
+            localStorage.setItem('token', resp.token);
+          }
+        }),
+        map(resp => resp.ok), //true
+        catchError(err => of(err.ok))//false
+      );
   }
 
   login(formData: LoginForm) {
@@ -71,5 +81,24 @@ export class UsuarioService {
         map(resp => resp.ok),
         catchError(err => of(err.error.msg))
       );
+  }
+
+  googleInit(): void {
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: '70858709123-fcvm26auhk4us67vhrmj2ashsi2925ls.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
+    });
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+
+    this.auth2.signOut().then(() => {
+      this.ngZone.run(() => { //Cuando son librerías externas, en este caso es el de google y no Angular
+        this.router.navigateByUrl('/login');
+      });
+    });
   }
 }
