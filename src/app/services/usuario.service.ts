@@ -32,4 +32,17 @@ export class UsuarioService {
         catchError(err => of(err.error.msg))
       );
   }
+
+  loginGoogle(token: string) {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/google`, { token })
+      .pipe(
+        tap(resp => {
+          if (resp.ok) {
+            localStorage.setItem('token', resp.token);
+          }
+        }),
+        map(resp => resp.ok),
+        catchError(err => of(err.error.msg))
+      );
+  }
 }

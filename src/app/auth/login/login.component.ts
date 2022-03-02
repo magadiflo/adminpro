@@ -17,6 +17,8 @@ declare const gapi: any;
 })
 export class LoginComponent {
 
+  public auth2: any;
+
   public miFormulario: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -47,15 +49,6 @@ export class LoginComponent {
       });
   }
 
-  onSuccess(googleUser: any) {
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token);
-  }
-
-  onFailure(error: any) {
-    console.log(error);
-  }
-
   renderButton() {
     gapi.signin2.render('my-signin2', {
       'scope': 'profile email',
@@ -63,9 +56,33 @@ export class LoginComponent {
       'height': 50,
       'longtitle': true,
       'theme': 'dark',
-      'onsuccess': this.onSuccess,
-      'onfailure': this.onFailure
     });
+
+    this.startApp();
+  }
+
+  startApp() {
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: '70858709123-fcvm26auhk4us67vhrmj2ashsi2925ls.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
+      this.attachSignin(document.getElementById('my-signin2')!);
+    });
+  }
+
+  attachSignin(element: HTMLElement) {
+    this.auth2.attachClickHandler(element, {},
+      (googleUser: any) => {
+        const id_token = googleUser.getAuthResponse().id_token; 
+        // console.log(id_token);
+        this.usuarioService.loginGoogle(id_token)
+          .subscribe(resp => {
+            console.log(resp);  
+          });
+      }, (error: any) => {
+        alert(JSON.stringify(error, undefined, 2));
+      });
   }
 
 }
