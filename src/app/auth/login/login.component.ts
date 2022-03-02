@@ -77,8 +77,12 @@ export class LoginComponent {
         const id_token = googleUser.getAuthResponse().id_token; 
         // console.log(id_token);
         this.usuarioService.loginGoogle(id_token)
-          .subscribe(resp => {
-            console.log(resp);  
+          .subscribe(ok => {
+            if (ok === true) {
+              this.router.navigateByUrl('/');
+            } else {
+              Swal.fire('¡Lo sentimos!', ok, 'error');
+            } 
           });
       }, (error: any) => {
         alert(JSON.stringify(error, undefined, 2));

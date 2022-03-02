@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2'
 
@@ -28,7 +29,8 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private router: Router) { }
 
   crearUsuario(): void {
     this.formSubmitted = true;
@@ -37,13 +39,11 @@ export class RegisterComponent {
     }
     //Realizar el posteo
     this.usuarioService.crearUsuario(this.miFormulario.value)
-      .subscribe({
-        next: resp => {
-          console.log(resp);
-        },
-        error: err => {
-          //Si sucede un error
-          Swal.fire('¡Ups! Algo salió mal', err.error.msg, 'error');
+      .subscribe(ok => {
+        if(ok === true){
+          this.router.navigateByUrl("/");
+        } else {
+          Swal.fire('¡Ups! Algo salió mal', ok, 'error');
         }
       });
   }
