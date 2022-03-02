@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 
 import { UsuarioService } from '../../services/usuario.service';
 
+declare const gapi: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -31,6 +33,7 @@ export class LoginComponent {
     if (this.miFormulario.controls['email'].value.length > 1) {
       this.miFormulario.controls['remember'].setValue(true);
     }
+    this.renderButton();
   }
 
   login(): void {
@@ -42,6 +45,27 @@ export class LoginComponent {
           Swal.fire('¡Lo sentimos!', ok, 'error');
         }
       });
+  }
+
+  onSuccess(googleUser: any) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+  }
+
+  onFailure(error: any) {
+    console.log(error);
+  }
+
+  renderButton() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': this.onSuccess,
+      'onfailure': this.onFailure
+    });
   }
 
 }
