@@ -48,15 +48,15 @@ export class UsuarioService {
       }
     })
       .pipe(
-        tap(resp => {
+        map(resp => {
           if (resp.ok) {
             const { email, google, nombre, role, img, uid } = (resp.usuario as UsuarioResponse);
             this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
             
             localStorage.setItem('token', resp.token);
           }
+          return resp.ok; //true
         }),
-        map(resp => resp.ok), //true
         catchError(err => of(err.ok))//false
       );
   }
