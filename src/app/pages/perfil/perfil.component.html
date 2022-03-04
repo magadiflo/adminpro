@@ -32,10 +32,11 @@
             <div class="card-body">
                 <h4 class="card-title">Avatar</h4>
                 <h6 class="card-subtitle">Imagen de usuario</h6>
-                <div class="mb-3">
-                    <img src="" alt="">
-                    <input type="file" (change)="cambiarImagen($event)" aria-label="selecciona imagen">
+                <div class="mb-3 text-center">
+                    <img *ngIf="!imgTemp" [src]="usuario.imagenUrl" alt="" class="img-avatar">
+                    <img *ngIf="imgTemp" [src]="imgTemp" alt="" class="img-avatar">
                 </div>
+                <input type="file" (change)="cambiarImagen($event)" aria-label="selecciona imagen">
                 <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
                     <i class="fa fa-save"></i>
                     Cambiar imagen

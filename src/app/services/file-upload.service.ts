@@ -27,9 +27,9 @@ export class FileUploadService {
         body: formData
       }).then(res => res.json());
 
-      console.log(resp);
+      console.log(resp.msg);  
+      return resp.ok ? resp.nombreArchivo : false;
 
-      return 'nombre de la imagen';
     } catch (error) {
       console.log(error);
       return false;

@@ -19,6 +19,7 @@ export class PerfilComponent implements OnInit {
   miFormulario!: FormGroup;
   usuario: Usuario;
   imagenSubir!: File;
+  imgTemp: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -57,11 +58,22 @@ export class PerfilComponent implements OnInit {
 
   cambiarImagen(event: Event) {
     this.imagenSubir = (event.target as HTMLInputElement).files![0];
+    if(!this.imagenSubir){
+      this.imgTemp = '';
+      return; 
+    }
+
+    const reader = new FileReader();
+    const url64 = reader.readAsDataURL(this.imagenSubir);
+    reader.onloadend = () => {
+      this.imgTemp = (reader.result as string);
+    }
+
   }
 
   subirImagen(): void {
     this.fileUploadService.actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid!)
-      .then(img => console.log(img));
+      .then(img => this.usuario.img = img);
   }
 
 }
