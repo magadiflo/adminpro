@@ -34,9 +34,9 @@
                 <h6 class="card-subtitle">Imagen de usuario</h6>
                 <div class="mb-3">
                     <img src="" alt="">
-                    <input type="file" aria-label="selecciona imagen">
+                    <input type="file" (change)="cambiarImagen($event)" aria-label="selecciona imagen">
                 </div>
-                <button type="button" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
+                <button type="button" [disabled]="!imagenSubir" (click)="subirImagen()" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
                     <i class="fa fa-save"></i>
                     Cambiar imagen
                 </button>

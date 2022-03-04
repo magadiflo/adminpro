@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 import { Usuario } from 'src/app/models/usuario.model';
+
 import { UsuarioService } from '../../services/usuario.service';
+import { FileUploadService } from '../../services/file-upload.service';
 
 @Component({
   selector: 'app-perfil',
@@ -16,10 +18,12 @@ export class PerfilComponent implements OnInit {
 
   miFormulario!: FormGroup;
   usuario: Usuario;
+  imagenSubir!: File;
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService) {
+    private usuarioService: UsuarioService,
+    private fileUploadService: FileUploadService) {
     this.usuario = this.usuarioService.usuario;
   }
 
@@ -49,6 +53,15 @@ export class PerfilComponent implements OnInit {
           Swal.fire('Error', ok, 'error');
         }
       });
+  }
+
+  cambiarImagen(event: Event) {
+    this.imagenSubir = (event.target as HTMLInputElement).files![0];
+  }
+
+  subirImagen(): void {
+    this.fileUploadService.actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid!)
+      .then(img => console.log(img));
   }
 
 }
