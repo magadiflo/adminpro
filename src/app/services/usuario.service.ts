@@ -54,7 +54,11 @@ export class UsuarioService {
       headers: {
         'x-token': this.token
       }
-    });
+    })
+    .pipe(
+      map(resp => resp.ok),
+      catchError(err => of(err.error.msg))
+    );
   }
 
   validarToken(): Observable<boolean> {
