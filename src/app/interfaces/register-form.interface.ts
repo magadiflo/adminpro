@@ -18,5 +18,6 @@ export interface Usuario {
     google: boolean,
     nombre: string,
     email: string,
+    img?: string,
     uid: string,
 }

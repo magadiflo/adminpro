@@ -27,6 +27,14 @@ export class UsuarioService {
     this.googleInit();
   }
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uid(): string {
+    return this.usuario.uid || '';
+  }
+
   crearUsuario(formData: RegisterForm) {
     return this.http.post<AuthResponse>(`${this.baseUrl}/usuarios`, formData)
       .pipe(
@@ -40,11 +48,19 @@ export class UsuarioService {
       );
   }
 
+  actualizarPerfil(data: { email: string, nombre: string, role: string }) {
+    data = { ...data, role: this.usuario.role! };
+    return this.http.put<AuthResponse>(`${this.baseUrl}/usuarios/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token
+      }
+    });
+  }
+
   validarToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
     return this.http.get<LoginResponse>(`${this.baseUrl}/login/renew`, {
       headers: {
-        'x-token': token
+        'x-token': this.token
       }
     })
       .pipe(
@@ -52,7 +68,7 @@ export class UsuarioService {
           if (resp.ok) {
             const { email, google, nombre, role, img, uid } = (resp.usuario as UsuarioResponse);
             this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
-            
+
             localStorage.setItem('token', resp.token);
           }
           return resp.ok; //true
@@ -96,7 +112,7 @@ export class UsuarioService {
           client_id: '70858709123-fcvm26auhk4us67vhrmj2ashsi2925ls.apps.googleusercontent.com',
           cookiepolicy: 'single_host_origin',
         });
-        
+
         resolve();
       });
     });
