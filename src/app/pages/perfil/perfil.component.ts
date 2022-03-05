@@ -73,7 +73,16 @@ export class PerfilComponent implements OnInit {
 
   subirImagen(): void {
     this.fileUploadService.actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid!)
-      .then(img => this.usuario.img = img);
+      .then(img => {
+        this.usuario.img = img;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Avatar actualizado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }).catch(err => Swal.fire('Error', 'No se pudo subir la imagen', 'error'));
   }
 
 }
