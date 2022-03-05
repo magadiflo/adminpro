@@ -16,7 +16,7 @@
                         <label for="email">Email</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-email"></i></div>
-                            <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                            <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email" [readonly]="usuario.google">
                         </div>
                     </div>
                     <button type="submit" [disabled]="miFormulario.invalid" class="btn btn-success waves-effect waves-light m-r-10 btn-block">
