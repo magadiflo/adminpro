@@ -1,3 +1,5 @@
+import { Usuario as UsuarioModel } from "../models/usuario.model";
+
 export interface RegisterForm {
     nombre: string,
     email: string,
@@ -20,4 +22,10 @@ export interface Usuario {
     email: string,
     img?: string,
     uid: string,
+}
+
+export interface ListaUsuarios {
+    ok: boolean,
+    total: number,
+    usuarios: UsuarioModel[],
 }

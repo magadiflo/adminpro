@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { map, catchError, of, tap, Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { RegisterForm, AuthResponse } from '../interfaces/register-form.interface';
+import { RegisterForm, AuthResponse, ListaUsuarios } from '../interfaces/register-form.interface';
 import { LoginForm, LoginResponse, UsuarioResponse } from '../interfaces/login-form.interface';
 import { Usuario } from '../models/usuario.model';
 
@@ -35,6 +35,14 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    };
+  }
+
   crearUsuario(formData: RegisterForm) {
     return this.http.post<AuthResponse>(`${this.baseUrl}/usuarios`, formData)
       .pipe(
@@ -55,10 +63,10 @@ export class UsuarioService {
         'x-token': this.token
       }
     })
-    .pipe(
-      map(resp => resp.ok),
-      catchError(err => of(err.error.msg))
-    );
+      .pipe(
+        map(resp => resp.ok),
+        catchError(err => of(err.error.msg))
+      );
   }
 
   validarToken(): Observable<boolean> {
@@ -130,5 +138,9 @@ export class UsuarioService {
         this.router.navigateByUrl('/login');
       });
     });
+  }
+
+  cargarUsuarios(desde: number = 0): Observable<ListaUsuarios> {
+    return this.http.get<ListaUsuarios>(`${this.baseUrl}/usuarios?desde=${desde}`, this.headers);
   }
 }

@@ -20,7 +20,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Usuarios</h4>
+                <h4 class="card-title">Usuarios ({{ totalUsuarios }})</h4>
                 <h6 class="card-subtitle">Usuarios registrados en mi aplicación</h6>
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -35,12 +35,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>:)</td>
-                                <td>magadiflo@gmail.com</td>
-                                <td>Martín</td>
-                                <td>Administrador</td>
-                                <td>Yes</td>
+                            <tr *ngFor="let usuario of usuarios">
+                                <td><img [src]="'http://localhost:3000/api/upload/usuarios/' + usuario.img" alt="{{ usuario.nombre }}" class="img-table"></td>
+                                <td>{{ usuario.email }}</td>
+                                <td>{{ usuario.nombre }}</td>
+                                <td>{{ usuario.role }}</td>
+                                <td>
+                                    <span class="label label-danger">Google</span>
+                                    <span class="label label-info">Normal</span>
+                                </td>
                                 <td class="text-nowrap">
                                     <a href="#" data-toggle="tooltip" data-original-title="Editar"
                                         aria-label="Editar registro">
