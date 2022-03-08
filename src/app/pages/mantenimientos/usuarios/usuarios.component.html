@@ -26,17 +26,17 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Avatar</th>
+                                <th class="w100">Avatar</th>
                                 <th>Correo</th>
                                 <th>Nombre</th>
-                                <th>Role</th>
-                                <th>Auth</th>
-                                <th class="text-nowrap">Acciones</th>
+                                <th class="w100">Role</th>
+                                <th class="w100">Auth</th>
+                                <th class="text-nowrap w100">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of usuarios">
-                                <td><img [src]="'http://localhost:3000/api/upload/usuarios/' + usuario.img" alt="{{ usuario.nombre }}" class="img-table"></td>
+                                <td><img [src]="usuario.imagenUrl" alt="{{ usuario.nombre }}" class="img-table"></td>
                                 <td>{{ usuario.email }}</td>
                                 <td>{{ usuario.nombre }}</td>
                                 <td>{{ usuario.role }}</td>

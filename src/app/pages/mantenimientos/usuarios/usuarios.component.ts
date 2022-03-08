@@ -24,7 +24,7 @@ export class UsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.cargarUsuarios();
   }
-  
+
   cargarUsuarios() {
     this.usuarioService.cargarUsuarios(this.desde)
       .subscribe(({ total, usuarios }) => {
@@ -35,14 +35,12 @@ export class UsuariosComponent implements OnInit {
 
   cambiarPagina(valor: number) {
     this.desde += valor;
-    if(this.desde < 0){
+    if (this.desde < 0) {
       this.desde = 0;
-    } else if(this.desde > this.totalUsuarios){
+    } else if (this.desde > this.totalUsuarios) {
       this.desde -= valor;
     }
     this.cargarUsuarios();
   }
-
-
 
 }
