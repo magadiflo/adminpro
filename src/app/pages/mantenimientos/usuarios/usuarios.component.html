@@ -41,8 +41,8 @@
                                 <td>{{ usuario.nombre }}</td>
                                 <td>{{ usuario.role }}</td>
                                 <td>
-                                    <span class="label label-danger">Google</span>
-                                    <span class="label label-info">Normal</span>
+                                    <span *ngIf="usuario.google" class="label label-danger">Google</span>
+                                    <span *ngIf="!usuario.google" class="label label-info">Normal</span>
                                 </td>
                                 <td class="text-nowrap">
                                     <a href="#" data-toggle="tooltip" data-original-title="Editar"
@@ -58,8 +58,8 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="btn btn-secondary mr-2">Anterior</button>
-                <button class="btn btn-secondary">Siguiente</button>
+                <button class="btn btn-secondary mr-2" (click)="cambiarPagina(-5)">Anterior</button>
+                <button class="btn btn-secondary" (click)="cambiarPagina(5)">Siguiente</button>
             </div>
         </div>
     </div>
