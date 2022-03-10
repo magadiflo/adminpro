@@ -18,6 +18,7 @@ export class UsuariosComponent implements OnInit {
 
   totalUsuarios: number = 0;
   usuarios: Usuario[] = [];
+  usuariosTemp: Usuario[] = [];
   desde: number = 0;
   cargando: boolean = true;
 
@@ -35,6 +36,7 @@ export class UsuariosComponent implements OnInit {
       .subscribe(({ total, usuarios }) => {
         this.totalUsuarios = total;
         this.usuarios = usuarios;
+        this.usuariosTemp = usuarios;
         this.cargando = false;
       });
   }
@@ -49,10 +51,14 @@ export class UsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
-  buscar(termino: string): void { 
-    this.busquedasService.buscar('usuarios', termino)
+  buscar(termino: string): void {
+    if (termino.trim().length === 0) {
+      this.usuarios = this.usuariosTemp;
+      return;
+    }
+    this.busquedasService.buscar('usuarios', termino.trim())
       .subscribe(resultados => {
-        this.usuarios = resultados; 
+        this.usuarios = resultados;
       });
   }
 

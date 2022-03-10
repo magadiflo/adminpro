@@ -30,12 +30,24 @@ export class BusquedasService {
     };
   }
 
+  private transformarUsuarios(resultados: Usuario[]): Usuario[] {
+    return resultados.map(u => new Usuario(u.nombre, u.email, '', u.img, u.google, u.role, u.uid));
+  }
+
   buscar(tipo: Tipo, termino: string) {
-    return this.http.get<Usuario[]>(`${this.baseUrl}/todo/coleccion/${tipo}/${termino}`, this.headers)
+    return this.http.get<any[]>(`${this.baseUrl}/todo/coleccion/${tipo}/${termino}`, this.headers)
       .pipe(
         map((resp: any) => {
-          const usuarios = (<Usuario[]>resp.resultados).map(u => new Usuario(u.nombre, u.email, '', u.img, u.google, u.role, u.uid));
-          return usuarios;
+          switch (tipo) {
+            case 'usuarios':
+              return this.transformarUsuarios(<Usuario[]>resp.resultados);
+            case 'medicos':
+              return [];
+            case 'hospitales':
+              return [];
+            default:
+              return [];
+          }
         })
       );
   }
