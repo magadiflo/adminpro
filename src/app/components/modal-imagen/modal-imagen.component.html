@@ -8,6 +8,11 @@
                 </div>
                 <div class="modal-body">
                     <h3>Selecciona una imagen</h3>
+                    <div class="mb-3 text-center">
+                        <img *ngIf="!imgTemp" [src]="modalImagenService.img" alt="" class="img-avatar">
+                        <img *ngIf="imgTemp" [src]="imgTemp" alt="" class="img-avatar">
+                    </div>
+                    <input type="file" (change)="cambiarImagen($event)" aria-label="selecciona imagen">
                 </div>
                 <div class="modal-footer">
                     <button type="button" (click)="cerrarModal()" class="btn btn-default waves-effect" data-dismiss="modal">Cancelar</button>
