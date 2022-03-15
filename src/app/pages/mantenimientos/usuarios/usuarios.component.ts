@@ -66,6 +66,10 @@ export class UsuariosComponent implements OnInit {
   }
 
   eliminarUsuario(usuario: Usuario): void {
+    if(usuario.uid === this.usuarioService.uid){
+      Swal.fire('Error', 'No puede borrarse a sí mismo', 'error');
+      return;
+    }
     Swal.fire({
       title: '¿Borrar usuario?',
       text: `Está a punto de borrar a ${usuario.nombre}`,
