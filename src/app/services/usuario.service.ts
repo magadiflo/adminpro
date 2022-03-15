@@ -7,6 +7,7 @@ import { map, catchError, of, tap, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { RegisterForm, AuthResponse, ListaUsuarios } from '../interfaces/register-form.interface';
 import { LoginForm, LoginResponse, UsuarioResponse } from '../interfaces/login-form.interface';
+
 import { Usuario } from '../models/usuario.model';
 
 declare const gapi: any;
@@ -152,5 +153,9 @@ export class UsuarioService {
           }
         })
       );
+  }
+
+  eliminarUsuario(usuario: Usuario) {
+    return this.http.delete(`${this.baseUrl}/usuarios/${usuario.uid}`, this.headers);    
   }
 }
