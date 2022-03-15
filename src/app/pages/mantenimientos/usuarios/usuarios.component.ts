@@ -6,6 +6,7 @@ import { Usuario } from 'src/app/models/usuario.model';
 
 import { UsuarioService } from '../../../services/usuario.service';
 import { BusquedasService } from '../../../services/busquedas.service';
+import { ModalImagenService } from '../../../services/modal-imagen.service';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
-    private busquedasService: BusquedasService) { }
+    private busquedasService: BusquedasService,
+    private modalImagenService: ModalImagenService) { }
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -105,6 +107,11 @@ export class UsuariosComponent implements OnInit {
       .subscribe(resp => {
         console.log(resp);  
       });
+  }
+
+  abrirModal(usuario: Usuario): void {
+    console.log(usuario);
+    this.modalImagenService.abrirModal();  
   }
 
 }
