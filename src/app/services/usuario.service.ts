@@ -59,11 +59,7 @@ export class UsuarioService {
 
   actualizarPerfil(data: { email: string, nombre: string, role: string }) {
     data = { ...data, role: this.usuario.role! };
-    return this.http.put<AuthResponse>(`${this.baseUrl}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    })
+    return this.http.put<AuthResponse>(`${this.baseUrl}/usuarios/${this.uid}`, data, this.headers)
       .pipe(
         map(resp => resp.ok),
         catchError(err => of(err.error.msg))
@@ -157,5 +153,9 @@ export class UsuarioService {
 
   eliminarUsuario(usuario: Usuario) {
     return this.http.delete(`${this.baseUrl}/usuarios/${usuario.uid}`, this.headers);    
+  }
+
+  guardarUsuario(usuario: Usuario) {
+    return this.http.put(`${this.baseUrl}/usuarios/${usuario.uid}`, usuario, this.headers);
   }
 }
