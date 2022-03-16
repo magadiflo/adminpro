@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 
-type Tipo = 'usuarios' | 'medicos' | 'doctores';
+type Tipo = 'usuarios' | 'medicos' | 'hospitales';
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 
@@ -14,6 +14,8 @@ export class ModalImagenService {
   tipo!: Tipo;
   id!: string;
   img!: string;
+
+  nuevaImagen: EventEmitter<string> = new EventEmitter();
 
   get ocultarModal(): boolean {
     return this._ocultarModal;

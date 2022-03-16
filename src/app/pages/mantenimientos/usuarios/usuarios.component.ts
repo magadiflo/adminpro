@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { delay, Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 
@@ -18,21 +19,34 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
     }`
   ]
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   totalUsuarios: number = 0;
   usuarios: Usuario[] = [];
   usuariosTemp: Usuario[] = [];
   desde: number = 0;
   cargando: boolean = true;
+  
+  imgSubs!: Subscription;
 
   constructor(
     private usuarioService: UsuarioService,
     private busquedasService: BusquedasService,
     private modalImagenService: ModalImagenService) { }
 
+  ngOnDestroy(): void {   
+    this.imgSubs.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.cargarUsuarios();
+    //Nos subscribimos al observable para cuando se haga el cambio de la 
+    //imagen este vuelva a cargar los usuarios
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(
+        delay(500)
+      )
+      .subscribe(img => this.cargarUsuarios());
   }
 
   cargarUsuarios() {
