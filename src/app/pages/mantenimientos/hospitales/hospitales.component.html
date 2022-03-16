@@ -21,7 +21,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right">
-                    <button class="btn btn-primary btn-sm">
+                    <button type="button" (click)="abrirSweetAlert()" class="btn btn-primary btn-sm">
                         <i class="fa fa-plus"></i> Crear hospital
                     </button>
                 </div>
@@ -38,14 +38,14 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let hospital of hospitales">
-                                <td><img [src]="hospital.img | imagen:'hospitales'" alt="{{ hospital.nombre }}" class="img-table cursor"></td>
+                                <td><img [src]="hospital.img | imagen:'hospitales'" alt="{{ hospital.nombre }}" (click)="abrirModal(hospital)" class="img-table cursor"></td>
                                 <td><input type="text" class="form-control" [(ngModel)]="hospital.nombre" placeholder="Nombre del hospital"></td>
                                 <td class="text-center">
-                                    <a href="#" data-toggle="tooltip" data-original-title="Guardar cambios"
+                                    <a href="#" (click)="$event.preventDefault(); guardarCambios(hospital);" data-toggle="tooltip" data-original-title="Guardar cambios"
                                         aria-label="Guardar cambios">
-                                        <i class="fa fa-save text-inverse m-r-10"></i>
+                                        <i class="fa fa-refresh text-inverse m-r-10"></i>
                                     </a>
-                                    <a href="#" data-toggle="tooltip" data-original-title="Borrar"
+                                    <a href="#" (click)="$event.preventDefault(); eliminarHospital(hospital);" data-toggle="tooltip" data-original-title="Borrar"
                                         aria-label="Borrar registro">
                                         <i class="fa fa-close text-danger"></i>
                                     </a>
