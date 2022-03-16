@@ -35,4 +35,16 @@ export class HospitalService {
         map(resp => resp.hospitales)
       );
   }
+
+  crearHospital(nombre: string) {
+    return this.http.post(`${this.baseUrl}/hospitales`, { nombre }, this.headers);
+  }
+
+  actualizarHospital(_id: string, nombre: string) {
+    return this.http.put(`${this.baseUrl}/hospitales/${_id}`, { nombre }, this.headers);
+  }
+
+  borrarHospital(_id: string) {
+    return this.http.delete(`${this.baseUrl}/hospitales/${_id}`, this.headers);
+  }
 }
