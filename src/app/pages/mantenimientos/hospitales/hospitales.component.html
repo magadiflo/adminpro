@@ -33,7 +33,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let hospital of hospitales">
-                                <td><img src="http://localhost:3000/api/upload/hospitales/{{hospital.img}}" alt="" class="img-table"></td>
+                                <td><img [src]="hospital.img | imagen:'hospitales'" alt="{{ hospital.nombre }}" class="img-table cursor"></td>
                                 <td><input type="text" class="form-control" [(ngModel)]="hospital.nombre" placeholder="Nombre del hospital"></td>
                                 <td class="text-center">
                                     <a href="#" data-toggle="tooltip" data-original-title="Guardar cambios"
