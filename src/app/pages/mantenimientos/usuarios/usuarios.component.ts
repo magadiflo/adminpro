@@ -14,9 +14,7 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styles: [
-    `.img-table {
-      width: 80px;
-    }`
+    
   ]
 })
 export class UsuariosComponent implements OnInit, OnDestroy {
