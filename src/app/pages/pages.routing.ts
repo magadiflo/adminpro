@@ -15,6 +15,8 @@ import { PerfilComponent } from './perfil/perfil.component';
 //Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
+import { MedicoComponent } from './mantenimientos/medicos/medico/medico.component';
 
 const routes: Routes = [
     {
@@ -29,10 +31,12 @@ const routes: Routes = [
             { path: 'promesas', component: PromesasComponent, data: { titulo: 'Promesas' } },
             { path: 'rxjs', component: RxjsComponent, data: { titulo: 'RxJs' } },
             { path: 'perfil', component: PerfilComponent, data: { titulo: 'Perfil de usuario' } },
-            
+
             //Mantenimientos
             { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Mantenimiento de Usuarios' } },
             { path: 'hospitales', component: HospitalesComponent, data: { titulo: 'Mantenimiento de Hospitales' } },
+            { path: 'medicos', component: MedicosComponent, data: { titulo: 'Mantenimiento de Médicos' } },
+            { path: 'medico/:id', component: MedicoComponent, data: { titulo: 'Mantenimiento del Médico' } },
         ],
     },
 ];
