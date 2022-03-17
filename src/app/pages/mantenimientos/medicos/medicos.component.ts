@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription, delay } from 'rxjs';
 
 import { Medico } from '../../../models/medico.model';
 
 import { MedicoService } from '../../../services/medico.service';
 import { ModalImagenService } from '../../../services/modal-imagen.service';
+import { BusquedasService } from '../../../services/busquedas.service';
 
 @Component({
   selector: 'app-medicos',
@@ -11,17 +13,29 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
   styles: [
   ]
 })
-export class MedicosComponent implements OnInit {
+export class MedicosComponent implements OnInit, OnDestroy {
 
   medicos: Medico[] = [];
   cargando: boolean = true;
+  imgSubs!: Subscription;
 
   constructor(
     private medicoService: MedicoService,
-    private modalImagenService: ModalImagenService) { }
+    private modalImagenService: ModalImagenService,
+    private busquedaService: BusquedasService) { }
+
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.cargarMedicos();
+
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(
+        delay(500)
+      )
+      .subscribe(img => this.cargarMedicos());
   }
 
   cargarMedicos(): void {
@@ -35,6 +49,17 @@ export class MedicosComponent implements OnInit {
 
   abrirModal(medico: Medico): void {
     this.modalImagenService.abrirModal('medicos', medico._id!, medico.img);
+  }
+
+  buscar(termino: string): void {
+    if (termino.trim().length === 0) {
+      this.cargarMedicos();
+      return;
+    }
+    this.busquedaService.buscar('medicos', termino.trim())
+      .subscribe(resultados => {
+        this.medicos = <Medico[]>resultados;
+      });
   }
 
 }
