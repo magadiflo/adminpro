@@ -7,6 +7,7 @@ import { Hospital } from '../../../models/hospital.model';
 
 import { HospitalService } from '../../../services/hospital.service';
 import { ModalImagenService } from '../../../services/modal-imagen.service';
+import { BusquedasService } from '../../../services/busquedas.service';
 
 @Component({
   selector: 'app-hospitales',
@@ -22,7 +23,8 @@ export class HospitalesComponent implements OnInit, OnDestroy {
 
   constructor(
     private hospitalService: HospitalService,
-    private modalImagenService: ModalImagenService) { }
+    private modalImagenService: ModalImagenService,
+    private busquedaService: BusquedasService) { }
 
   ngOnDestroy(): void {
     this.imgSubs.unsubscribe();
@@ -81,6 +83,17 @@ export class HospitalesComponent implements OnInit, OnDestroy {
 
   abrirModal(hospital: Hospital) {
     this.modalImagenService.abrirModal('hospitales', hospital._id!, hospital.img);
+  }
+
+  buscar(termino: string): void {
+    if (termino.trim().length === 0) {
+      this.cargarHospitales();
+      return;
+    }
+    this.busquedaService.buscar('hospitales', termino.trim())
+      .subscribe(resultados => {
+        this.hospitales = <Hospital[]>resultados;
+      });
   }
 
 }
