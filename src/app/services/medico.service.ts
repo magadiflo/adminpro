@@ -43,7 +43,7 @@ export class MedicoService {
     return this.http.put(`${this.baseUrl}/medicos/${medico._id}`, medico, this.headers);
   }
 
-  borrarHospital(_id: string) {
+  borrarMedico(_id: string) {
     return this.http.delete(`${this.baseUrl}/medicos/${_id}`, this.headers);
   }
 

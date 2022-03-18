@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, delay } from 'rxjs';
 
+import Swal from 'sweetalert2';
+
 import { Medico } from '../../../models/medico.model';
 
 import { MedicoService } from '../../../services/medico.service';
@@ -60,6 +62,37 @@ export class MedicosComponent implements OnInit, OnDestroy {
       .subscribe(resultados => {
         this.medicos = <Medico[]>resultados;
       });
+  }
+
+  borrarMedico(medico: Medico) {
+    Swal.fire({
+      title: '¿Borrar médico?',
+      text: `Está a punto de borrar a ${medico.nombre}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.medicoService.borrarMedico(medico._id!)
+          .subscribe({
+            next: (resp) => {
+              Swal.fire(
+                '¡Médico eliminado!',
+                `El médico ${medico.nombre} fue eliminado de su BD`,
+                'success'
+              );
+              this.cargarMedicos();
+            },
+            error: ({ error }) => {
+              Swal.fire(
+                '¡Ups, hubo problemas al eliminar!',
+                `${error.msg}`,
+                'error'
+              );
+            },
+          });
+      }
+    });
   }
 
 }
