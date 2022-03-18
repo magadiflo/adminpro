@@ -5,11 +5,10 @@
                 <h4 class="card-title">Médico</h4>
                 <h6 class="card-subtitle">Actualizar información</h6>
                 <form [formGroup]="miFormulario" (ngSubmit)="guardarMedico()" class="form-horizontal p-t-20">
-                    <div class="form-group row">
+                    <div class="form-group row" *ngIf="medicoSeleccionado">
                         <div class="col-sm-12">
                             <div class="text-center">
-                                <img src="http://localhost:3000/api/upload/medicos/a34a6e64-47a5-4ea6-be0c-428cd26507ef.png"
-                                    alt="doctora" class="w200">
+                                <img [src]="medicoSeleccionado.img | imagen:'medicos'" alt="{{ medicoSeleccionado.nombre }}" class="w200">
                             </div>
                         </div>
                     </div>

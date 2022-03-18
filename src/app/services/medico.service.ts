@@ -35,8 +35,8 @@ export class MedicoService {
       );
   }
 
-  crearMedico(medico: Medico) {
-    return this.http.post(`${this.baseUrl}/medicos`, medico, this.headers);
+  crearMedico(medico: { nombre: string, hospital: string }) {
+    return this.http.post<{ ok: boolean, medico: Medico }>(`${this.baseUrl}/medicos`, medico, this.headers);
   }
 
   actualizarMedico(medico: Medico) {
@@ -46,6 +46,5 @@ export class MedicoService {
   borrarMedico(_id: string) {
     return this.http.delete(`${this.baseUrl}/medicos/${_id}`, this.headers);
   }
-
 
 }
