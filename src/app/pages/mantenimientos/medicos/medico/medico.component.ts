@@ -14,6 +14,7 @@ import { HospitalService } from '../../../../services/hospital.service';
 export class MedicoComponent implements OnInit {
 
   hospitales: Hospital[] = [];
+  hospitalSeleccionado!: Hospital;
 
   miFormulario: FormGroup = this.fb.group({
     nombre: ['EsSalud', [Validators.required]],
@@ -26,12 +27,17 @@ export class MedicoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarHospitales();
+    //Observable que escucha el cambio del SELECT
+    this.miFormulario.get('hospital')?.valueChanges
+      .subscribe(hospitalId => {
+        this.hospitalSeleccionado = this.hospitales.find(h => h._id === hospitalId)!;  
+      });
   }
 
   cargarHospitales() {
     this.hospitalService.cargarHospitales()
       .subscribe((hospitales: Hospital[]) => {
-        this.hospitales = hospitales;
+        this.hospitales = hospitales;  
       });
   }
 
