@@ -8,7 +8,8 @@
                     <div class="form-group row" *ngIf="medicoSeleccionado">
                         <div class="col-sm-12">
                             <div class="text-center">
-                                <img [src]="medicoSeleccionado.img | imagen:'medicos'" alt="{{ medicoSeleccionado.nombre }}" class="w200">
+                                <img [src]="medicoSeleccionado.img | imagen:'medicos'"
+                                    alt="{{ medicoSeleccionado.nombre }}" class="w200">
                             </div>
                         </div>
                     </div>
@@ -25,16 +26,19 @@
                         <label for="hospital" class="col-sm-3 control-label">Hospital</label>
                         <div class="col-sm-9">
                             <div class="form-group">
-                                <select formControlName="hospital" class="form-control" id="hospital" aria-label="Selector de hospital">
+                                <select formControlName="hospital" class="form-control" id="hospital"
+                                    aria-label="Selector de hospital">
                                     <option value="">--Seleccionar hospital--</option>
-                                    <option *ngFor="let hospital of hospitales" [value]="hospital._id">{{ hospital.nombre }}</option>
+                                    <option *ngFor="let hospital of hospitales" [value]="hospital._id">{{
+                                        hospital.nombre }}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row m-b-0">
                         <div class="offset-sm-3 col-sm-9">
-                            <button type="submit" [disabled]="miFormulario.invalid" class="btn btn-success waves-effect waves-light">
+                            <button type="submit" [disabled]="miFormulario.invalid"
+                                class="btn btn-success waves-effect waves-light">
                                 <i class="fa fa-save"></i> Guardar
                             </button>
                         </div>
@@ -51,7 +55,8 @@
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <div class="text-center">
-                            <img [src]="hospitalSeleccionado.img | imagen:'hospitales'" alt="{{ hospitalSeleccionado.nombre }}" class="w100-porcent">
+                            <img [src]="hospitalSeleccionado.img | imagen:'hospitales'"
+                                alt="{{ hospitalSeleccionado.nombre }}" class="w100-porcent">
                         </div>
                     </div>
                 </div>

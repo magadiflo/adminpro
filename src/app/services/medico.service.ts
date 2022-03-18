@@ -33,6 +33,13 @@ export class MedicoService {
       .pipe(
         map(resp => resp.medicos)
       );
+    }
+    
+  obtenerMedicoPorId(id: string) {
+    return this.http.get<{ ok: boolean, medico: Medico }>(`${this.baseUrl}/medicos/${id}`, this.headers)
+      .pipe(
+        map(resp => resp.medico)
+      );
   }
 
   crearMedico(medico: { nombre: string, hospital: string }) {

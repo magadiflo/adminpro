@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import Swal from 'sweetalert2';
 
@@ -31,15 +31,30 @@ export class MedicoComponent implements OnInit {
     private fb: FormBuilder,
     private hospitalService: HospitalService,
     private medicoService: MedicoService,
-    private router: Router) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarHospitales();
+
+    this.activatedRoute.params
+      .subscribe(({ id }) => {
+        this.cargarMedico(id);
+      });
+
     //Observable que escucha el cambio del SELECT
     this.miFormulario.get('hospital')?.valueChanges
       .subscribe(hospitalId => {
         this.hospitalSeleccionado = this.hospitales.find(h => h._id === hospitalId)!;
       });
+  }
+
+  cargarMedico(id: string) {
+    if (id.trim() === 'nuevo') return;
+    this.medicoService.obtenerMedicoPorId(id)
+      .subscribe(medico => {
+        this.medicoSeleccionado = medico;
+      })
   }
 
   cargarHospitales() {
