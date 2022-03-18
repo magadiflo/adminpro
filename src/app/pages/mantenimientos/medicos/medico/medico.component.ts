@@ -52,9 +52,21 @@ export class MedicoComponent implements OnInit {
   cargarMedico(id: string) {
     if (id.trim() === 'nuevo') return;
     this.medicoService.obtenerMedicoPorId(id)
-      .subscribe(medico => {
-        this.medicoSeleccionado = medico;
-      })
+      .subscribe({
+        next: medico => {
+          if (!medico) {
+            this.router.navigateByUrl('/dashboard/medicos');
+            return;
+          }
+          const nombre = medico.nombre;
+          const _id = medico.hospital?._id;
+          this.medicoSeleccionado = medico;
+          this.miFormulario.setValue({ nombre, hospital: _id });
+        },
+        error: err => {
+          this.router.navigateByUrl('/dashboard/medicos');
+        }
+      });
   }
 
   cargarHospitales() {
@@ -66,17 +78,34 @@ export class MedicoComponent implements OnInit {
 
   guardarMedico() {
     const { nombre } = this.miFormulario.value;
-    this.medicoService.crearMedico(this.miFormulario.value)
-      .subscribe(({ medico }) => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: `Se guardó al médico ${nombre}`,
-          showConfirmButton: false,
-          timer: 1500
+    if (this.medicoSeleccionado) { //actualizar
+      const data = {
+        ...this.miFormulario.value,
+        _id: this.medicoSeleccionado._id
+      }
+      this.medicoService.actualizarMedico(data)
+        .subscribe(resp => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Se actualizó el médico ${nombre}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
         });
-        this.router.navigateByUrl(`/dashboard/medico/${medico._id}`);
-      });
+    } else { //crear
+      this.medicoService.crearMedico(this.miFormulario.value)
+        .subscribe(({ medico }) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Se guardó al médico ${nombre}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.router.navigateByUrl(`/dashboard/medico/${medico._id}`);
+        });
+    }
   }
 
 }
