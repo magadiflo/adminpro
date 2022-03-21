@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 
 import { Usuario } from '../../models/usuario.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,10 @@ export class HeaderComponent {
 
   usuario: Usuario;
 
-  constructor(private usuarioService: UsuarioService) {
-    this.usuario = this.usuarioService.usuario;    
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router) {
+    this.usuario = this.usuarioService.usuario;
   }
 
   logout(): void {
@@ -23,7 +26,8 @@ export class HeaderComponent {
   }
 
   buscar(termino: string): void {
-    console.log(termino);  
+    if(!termino.trim()) return;
+    this.router.navigateByUrl(`/dashboard/buscar/${termino.trim()}`);
   }
 
 }
