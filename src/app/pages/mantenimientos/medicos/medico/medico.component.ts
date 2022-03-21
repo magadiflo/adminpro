@@ -9,6 +9,7 @@ import { Medico } from '../../../../models/medico.model';
 
 import { HospitalService } from '../../../../services/hospital.service';
 import { MedicoService } from '../../../../services/medico.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-medico',
@@ -52,6 +53,9 @@ export class MedicoComponent implements OnInit {
   cargarMedico(id: string) {
     if (id.trim() === 'nuevo') return;
     this.medicoService.obtenerMedicoPorId(id)
+      .pipe(
+        delay(100)
+      )
       .subscribe({
         next: medico => {
           if (!medico) {
