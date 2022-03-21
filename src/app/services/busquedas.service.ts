@@ -54,4 +54,8 @@ export class BusquedasService {
       );
   }
 
+  busquedaGlobal(termino: string) {
+    return this.http.get<{ ok: boolean, usuarios: Usuario[], hospitales: Hospital[], medicos: Medico[] }>(`${this.baseUrl}/todo/${termino}`, this.headers);
+  }
+
 }
