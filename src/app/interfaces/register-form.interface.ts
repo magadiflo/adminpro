@@ -1,5 +1,7 @@
 import { Usuario as UsuarioModel } from "../models/usuario.model";
 
+import { Menu } from './menu.interface';
+
 export interface RegisterForm {
     nombre: string,
     email: string,
@@ -13,6 +15,7 @@ export interface AuthResponse {
     usuario?: Usuario,
     token?: string,
     msg?: string,
+    menu?: Menu[]
 }
 
 export interface Usuario {

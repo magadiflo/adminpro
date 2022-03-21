@@ -7,6 +7,7 @@ import { map, catchError, of, tap, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { RegisterForm, AuthResponse, ListaUsuarios } from '../interfaces/register-form.interface';
 import { LoginForm, LoginResponse, UsuarioResponse } from '../interfaces/login-form.interface';
+import { Menu } from '../interfaces/menu.interface';
 
 import { Usuario } from '../models/usuario.model';
 
@@ -44,12 +45,17 @@ export class UsuarioService {
     };
   }
 
+  guardarLocalStorage(token: string, menu: Menu[]) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
   crearUsuario(formData: RegisterForm) {
     return this.http.post<AuthResponse>(`${this.baseUrl}/usuarios`, formData)
       .pipe(
-        tap(({ ok, token }) => {
+        tap(({ ok, token, menu }) => {
           if (ok) {
-            localStorage.setItem('token', token!);
+            this.guardarLocalStorage(token!, menu!);
           }
         }),
         map(resp => resp.ok),
@@ -77,8 +83,7 @@ export class UsuarioService {
           if (resp.ok) {
             const { email, google, nombre, role, img, uid } = (resp.usuario as UsuarioResponse);
             this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
-
-            localStorage.setItem('token', resp.token);
+            this.guardarLocalStorage(resp.token, resp.menu!);
           }
           return resp.ok; //true
         }),
@@ -92,7 +97,7 @@ export class UsuarioService {
       .pipe(
         tap(resp => {
           if (resp.ok) {
-            localStorage.setItem('token', resp.token);
+            this.guardarLocalStorage(resp.token, resp.menu!);
           }
         }),
         map(resp => resp.ok),
@@ -105,7 +110,7 @@ export class UsuarioService {
       .pipe(
         tap(resp => {
           if (resp.ok) {
-            localStorage.setItem('token', resp.token);
+            this.guardarLocalStorage(resp.token, resp.menu!);
           }
         }),
         map(resp => resp.ok),
@@ -129,6 +134,7 @@ export class UsuarioService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
 
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => { //Cuando son librerías externas, en este caso es el de google y no Angular
@@ -152,7 +158,7 @@ export class UsuarioService {
   }
 
   eliminarUsuario(usuario: Usuario) {
-    return this.http.delete(`${this.baseUrl}/usuarios/${usuario.uid}`, this.headers);    
+    return this.http.delete(`${this.baseUrl}/usuarios/${usuario.uid}`, this.headers);
   }
 
   guardarUsuario(usuario: Usuario) {

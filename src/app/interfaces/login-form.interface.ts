@@ -1,3 +1,5 @@
+import { Menu } from './menu.interface';
+
 export interface LoginForm {
     nombre: string,
     email: string,
@@ -7,7 +9,8 @@ export interface LoginForm {
 export interface LoginResponse {
     ok: boolean,
     token: string,
-    usuario?: UsuarioResponse 
+    menu?: Menu[],
+    usuario?: UsuarioResponse
 }
 
 export interface UsuarioResponse {
