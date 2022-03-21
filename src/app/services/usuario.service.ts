@@ -11,6 +11,10 @@ import { Menu } from '../interfaces/menu.interface';
 
 import { Usuario } from '../models/usuario.model';
 
+import { Rol } from '../interfaces/rol.interface';
+
+
+
 declare const gapi: any;
 
 @Injectable({
@@ -31,6 +35,10 @@ export class UsuarioService {
 
   get token(): string {
     return localStorage.getItem('token') || '';
+  }
+
+  get role(): Rol {
+    return this.usuario.role!;
   }
 
   get uid(): string {

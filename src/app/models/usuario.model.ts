@@ -1,4 +1,5 @@
 import { environment } from "../../environments/environment";
+import { Rol } from '../interfaces/rol.interface';
 
 const baseUrl: string = environment.baseUrl;
 
@@ -10,7 +11,7 @@ export class Usuario {
         public password?: string,
         public img?: string,
         public google?: boolean,
-        public role?: string,
+        public role?: Rol,
         public uid?: string) { }
 
     get imagenUrl() {

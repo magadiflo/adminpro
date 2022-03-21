@@ -1,4 +1,5 @@
 import { Menu } from './menu.interface';
+import { Rol } from './rol.interface';
 
 export interface LoginForm {
     nombre: string,
@@ -16,7 +17,7 @@ export interface LoginResponse {
 export interface UsuarioResponse {
     nombre: string,
     email: string,
-    role?: string,
+    role?: Rol,
     google?: boolean,
     uid?: string,
     img?: string,
