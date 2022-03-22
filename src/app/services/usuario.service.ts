@@ -149,6 +149,9 @@ export class UsuarioService {
         this.router.navigateByUrl('/login');
       });
     });
+
+    this.router.navigateByUrl('/login');
+    console.log('Finalizando sesión...');  
   }
 
   cargarUsuarios(desde: number = 0): Observable<ListaUsuarios> {
