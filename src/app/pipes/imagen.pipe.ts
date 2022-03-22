@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment'
 
 type Tipo = 'usuarios' | 'medicos' | 'hospitales';
 
